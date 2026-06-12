@@ -22,7 +22,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
         search= self.request.query_params.get('search')
 
         if in_stock:
-            queryset=queryset.filter(stock__gte=1)
+            queryset=queryset.filter(stock_quantity__gte=1)
 
         if search:
             queryset=queryset.filter(Q(name__icontains=search) | Q(sku__icontains=search))
@@ -125,7 +125,7 @@ class CancelOrderView(APIView):
 
             product = item.product
 
-            product.stock += item.quantity
+            product.stock_quantity += item.quantity
 
             product.save()
 

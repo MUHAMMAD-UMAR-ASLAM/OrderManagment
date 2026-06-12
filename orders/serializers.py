@@ -115,7 +115,7 @@ class OrderSerializer(serializers.ModelSerializer):
         for item in items_data:
             product = products_map[item["product_id"]]
 
-            if product.stock < item["quantity"]:
+            if product.stock_quantity < item["quantity"]:
                 raise serializers.ValidationError(
                     f"Insufficient stock for {product.name}"
                 )
@@ -128,8 +128,8 @@ class OrderSerializer(serializers.ModelSerializer):
             product = products_map[item["product_id"]]
             qty = item["quantity"]
 
-            product.stock = F("stock") - qty
-            product.save(update_fields=["stock"])
+            product.stock = F("stock_quantity") - qty
+            product.save(update_fields=["stock_quantity"])
 
             order_items.append(
                 OrderItem(
